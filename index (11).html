@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Programme Esthétique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#08090c;
+  --card:#11131a;
+  --card2:#171a23;
+  --line:rgba(255,255,255,.09);
+  --line2:rgba(255,255,255,.15);
+  --text:#f5f7fb;
+  --muted:#9ca3af;
+  --muted2:#6b7280;
+  --blue:#61a5ff;
+  --green:#4ade80;
+  --orange:#fbbf24;
+  --purple:#c084fc;
+  --red:#fb7185;
+  --radius:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif}
+body{overflow:hidden}
+.app{height:100dvh;display:flex;flex-direction:column}
+header{padding:22px 18px 14px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#10131b 0%,#08090c 100%)}
+h1{font-size:25px;letter-spacing:-.7px;font-weight:800}
+.subtitle{margin-top:5px;color:var(--muted);font-size:13px}
+.tabs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:12px 18px;border-bottom:1px solid var(--line)}
+.tab{
+  border:1px solid var(--line);
+  background:var(--card);
+  color:var(--muted);
+  border-radius:14px;
+  padding:13px 12px;
+  font-weight:700;
+  font-size:14px;
+  cursor:pointer;
+}
+.tab.active{background:#f5f7fb;color:#07080b;border-color:#f5f7fb}
+.page{display:none;overflow:auto;padding:18px;padding-bottom:34px}
+.page.active{display:block}
+.grid{display:grid;gap:12px}
+.day{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:16px;
+}
+.day.topush{border-color:rgba(97,165,255,.35)}
+.day.topull{border-color:rgba(74,222,128,.35)}
+.day.tomaison{border-color:rgba(251,191,36,.35)}
+.day.toupper{border-color:rgba(192,132,252,.35)}
+.day.torepos{opacity:.68}
+.day-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.day-name{font-weight:800;font-size:18px}
+.badge{
+  font-size:12px;
+  font-weight:800;
+  padding:7px 11px;
+  border-radius:999px;
+  white-space:nowrap;
+}
+.b-push{background:rgba(97,165,255,.15);color:var(--blue)}
+.b-pull{background:rgba(74,222,128,.15);color:var(--green)}
+.b-maison{background:rgba(251,191,36,.16);color:var(--orange)}
+.b-upper{background:rgba(192,132,252,.16);color:var(--purple)}
+.b-repos{background:rgba(255,255,255,.08);color:var(--muted)}
+.day-desc{margin-top:9px;color:var(--muted);font-size:14px;line-height:1.45}
+.session-switch{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.sbtn{
+  border:1px solid var(--line);
+  background:var(--card);
+  color:var(--muted);
+  border-radius:13px;
+  padding:12px 6px;
+  font-size:12px;
+  font-weight:800;
+  cursor:pointer;
+}
+.sbtn.active{background:var(--card2);color:var(--text);border-color:var(--line2)}
+.session-card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:22px;
+  overflow:hidden;
+}
+.session-title{
+  padding:18px;
+  border-bottom:1px solid var(--line);
+  background:var(--card2);
+}
+.session-title h2{font-size:22px;letter-spacing:-.6px}
+.session-title p{margin-top:6px;color:var(--muted);font-size:14px;line-height:1.45}
+.block{padding:16px 18px;border-bottom:1px solid var(--line)}
+.block:last-child{border-bottom:none}
+.block-name{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:11px;
+}
+.block-name strong{font-size:15px}
+.block-name span{font-size:12px;color:var(--muted2);font-weight:700}
+.exercise{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:12px;
+  align-items:start;
+  padding:11px 0;
+  border-top:1px solid rgba(255,255,255,.065);
+}
+.exercise:first-of-type{border-top:none}
+.ex-name{font-size:15px;font-weight:650;line-height:1.35}
+.ex-target{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.35}
+.ex-dose{
+  font-size:13px;
+  font-weight:800;
+  color:var(--text);
+  background:rgba(255,255,255,.07);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:8px 9px;
+  white-space:nowrap;
+  text-align:right;
+}
+.note{
+  margin-top:14px;
+  background:rgba(255,255,255,.06);
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:13px;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.45;
+}
+
+.record-card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:15px;
+}
+.record-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+}
+.record-title{
+  font-size:16px;
+  font-weight:800;
+  line-height:1.25;
+}
+.record-sub{
+  margin-top:4px;
+  font-size:12px;
+  color:var(--muted);
+}
+.record-input-wrap{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  background:rgba(255,255,255,.06);
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:8px 10px;
+  min-width:118px;
+}
+.record-input{
+  width:64px;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:var(--text);
+  font-size:18px;
+  font-weight:800;
+  text-align:right;
+}
+.record-unit{
+  color:var(--muted);
+  font-size:13px;
+  font-weight:800;
+}
+.record-meta{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  font-size:12px;
+  color:var(--muted2);
+  border-top:1px solid rgba(255,255,255,.065);
+  padding-top:10px;
+}
+.records-help{
+  background:rgba(255,255,255,.06);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:13px;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.45;
+  margin-bottom:14px;
+}
+.records-actions{
+  display:flex;
+  gap:10px;
+  margin-bottom:14px;
+}
+.small-action{
+  flex:1;
+  border:1px solid var(--line);
+  background:var(--card);
+  color:var(--muted);
+  border-radius:13px;
+  padding:12px;
+  font-weight:800;
+  cursor:pointer;
+}
+.small-action:active{transform:scale(.98)}
+
+@media(min-width:760px){
+  body{display:flex;justify-content:center}
+  .app{max-width:820px;width:100%;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+  .grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <h1>Programme esthétique</h1>
+  <div class="subtitle">Seulement le planning et le détail des séances.</div>
+</header>
+
+<nav class="tabs">
+  <button class="tab active" onclick="showPage('planning', this)">Planning</button>
+  <button class="tab" onclick="showPage('seances', this)">Séances</button>
+  <button class="tab" onclick="showPage('records', this)">Records</button>
+</nav>
+
+<main id="planning" class="page active">
+  <div class="grid" id="planning-grid"></div>
+</main>
+
+<main id="seances" class="page">
+  <div class="session-switch" id="session-switch"></div>
+  <div id="session-detail"></div>
+</main>
+
+<main id="records" class="page">
+  <div class="records-help">
+    Note ici ton meilleur poids sur chaque exercice. Les valeurs sont sauvegardées automatiquement sur cet appareil.
+  </div>
+  <div class="records-actions">
+    <button class="small-action" onclick="clearRecords()">Réinitialiser</button>
+    <button class="small-action" onclick="renderRecords()">Actualiser</button>
+  </div>
+  <div class="grid" id="records-grid"></div>
+</main>
+</div>
+
+<script>
+const planning = [
+  {day:"Lundi", type:"Push", desc:"Pecs, épaules, triceps, abdos"},
+  {day:"Mardi", type:"Pull", desc:"Dos, biceps, arrière d’épaules, avant-bras"},
+  {day:"Mercredi", type:"Maison", desc:"Pompes, abdos, gainage, avant-bras"},
+  {day:"Jeudi", type:"Push", desc:"Deuxième séance pecs / épaules pour le volume"},
+  {day:"Vendredi", type:"Pull", desc:"Deuxième séance dos / bras / avant-bras"},
+  {day:"Samedi", type:"Upper", desc:"Rappel haut du corps esthétique et congestion"},
+  {day:"Dimanche", type:"Repos", desc:"Repos complet ou marche légère"}
+];
+
+const sessions = {
+  Push:{
+    label:"Push",
+    subtitle:"Focus pecs visibles, épaules larges, triceps. Priorité au haut des pecs et à la largeur d’épaules.",
+    blocks:[
+      {name:"Pecs", goal:"volume + haut des pecs", ex:[
+        ["Développé couché barre","pectoraux, force", "5 × 5-8"],
+        ["Développé incliné haltères","haut des pecs", "4 × 8-10"],
+        ["Développé convergent machine","congestion pecs", "4 × 10-12"],
+        ["Écartés poulie basse","haut/interne des pecs", "4 × 12-15"],
+        ["Dips penché avant","bas des pecs + triceps", "3 × max"]
+      ]},
+      {name:"Épaules", goal:"largeur visuelle", ex:[
+        ["Développé militaire haltères","deltoïde avant", "4 × 8-10"],
+        ["Élévations latérales strictes","deltoïde latéral", "5 × 15-20"],
+        ["Élévations latérales partielles","finition épaules", "2 × 25"]
+      ]},
+      {name:"Triceps + abdos", goal:"bras secs + ventre visible", ex:[
+        ["Extension triceps corde","triceps", "4 × 10-12"],
+        ["Barre front EZ","longue portion triceps", "3 × 8-10"],
+        ["Crunch câble lourd","abdos épais", "4 × 15-20"],
+        ["Relevés de jambes suspendu","bas des abdos", "4 × 12-15"]
+      ]}
+    ],
+    note:"Repos : 2 min sur les développés lourds, 60 à 90 sec sur les isolations."
+  },
+  Pull:{
+    label:"Pull",
+    subtitle:"Focus dos en V, bras dessinés et avant-bras plus épais.",
+    blocks:[
+      {name:"Dos largeur", goal:"V shape", ex:[
+        ["Tractions pronation","grands dorsaux", "5 × 6-10"],
+        ["Tirage vertical prise serrée","dorsaux bas", "4 × 10-12"],
+        ["Pull-over poulie","isolation dorsaux", "3 × 12-15"]
+      ]},
+      {name:"Dos épaisseur", goal:"dos dense", ex:[
+        ["Rowing barre","milieu du dos", "4 × 8-10"],
+        ["Rowing unilatéral haltère","dorsaux + trapèzes", "4 × 10"],
+        ["Face pulls","arrière d’épaules", "5 × 15-20"],
+        ["Shrugs haltères lourds","trapèzes", "4 × 12-15"]
+      ]},
+      {name:"Biceps + avant-bras", goal:"bras et grip", ex:[
+        ["Curl barre EZ","biceps lourd", "4 × 8-10"],
+        ["Curl incliné","biceps étiré", "4 × 10-12"],
+        ["Curl marteau croisé","brachial + avant-bras", "4 × 12"],
+        ["Reverse curl barre","avant-bras", "4 × 12-15"],
+        ["Wrist curls","fléchisseurs avant-bras", "4 × 20"],
+        ["Farmer walk","grip + avant-bras", "4 × 40 sec"]
+      ]}
+    ],
+    note:"Garde le dos droit sur les rowings. Tire avec les coudes, pas avec les mains."
+  },
+  Maison:{
+    label:"Maison",
+    subtitle:"Séance simple à faire sans salle : pompes, abdos, gainage, cardio court.",
+    blocks:[
+      {name:"Pompes", goal:"pecs + triceps", ex:[
+        ["Pompes pieds surélevés","haut des pecs", "4 × 12-20"],
+        ["Pompes classiques lentes","pecs", "4 × max"],
+        ["Pompes diamant","triceps", "4 × 10-15"]
+      ]},
+      {name:"Abdos", goal:"visibilité + gainage", ex:[
+        ["Crunchs","haut des abdos", "4 × 25"],
+        ["Relevés de jambes","bas des abdos", "4 × 20"],
+        ["Planche","gainage", "4 × 60 sec"],
+        ["Russian twists","obliques", "4 × 30"]
+      ]},
+      {name:"Avant-bras + cardio", goal:"grip + sèche", ex:[
+        ["Dead hang","grip", "4 × max"],
+        ["Grip trainer","avant-bras", "4 × 25"],
+        ["Reverse wrist curls","extenseurs avant-bras", "4 × 20"],
+        ["Mountain climbers","cardio abdos", "4 × 45 sec"]
+      ]}
+    ],
+    note:"À faire proprement, sans courir. Le but est de compléter les séances salle."
+  },
+  Upper:{
+    label:"Upper",
+    subtitle:"Rappel haut du corps : congestion, symétrie, bras, épaules, abdos.",
+    blocks:[
+      {name:"Haut du corps", goal:"rappel esthétique", ex:[
+        ["Développé incliné barre","haut des pecs", "4 × 6-8"],
+        ["Tractions supination","dos + biceps", "4 × 8-10"],
+        ["Développé haltères neutre","pecs + épaules", "4 × 10"],
+        ["Rowing chest-supported","dos propre", "4 × 10-12"]
+      ]},
+      {name:"Finition visuelle", goal:"épaules + bras", ex:[
+        ["Élévations latérales","largeur épaules", "5 × 15-20"],
+        ["Curl pupitre","biceps", "3 × 10-12"],
+        ["Extension triceps unilatérale","triceps", "3 × 12"],
+        ["Curl marteau","avant-bras", "3 × 12-15"]
+      ]},
+      {name:"Abdos", goal:"ventre plus sec", ex:[
+        ["Crunch câble","abdos lourds", "3 × 20"],
+        ["Gainage latéral","obliques", "3 × 45 sec / côté"],
+        ["Vacuum","taille visuelle", "3 × 45 sec"]
+      ]}
+    ],
+    note:"Séance moins lourde que Push/Pull. Cherche surtout la congestion et la qualité d’exécution."
+  }
+};
+
+function badgeClass(type){
+  return "b-" + type.toLowerCase();
+}
+function dayClass(type){
+  return "to" + type.toLowerCase();
+}
+function showPage(id, btn){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  btn.classList.add("active");
+}
+function renderPlanning(){
+  const grid = document.getElementById("planning-grid");
+  grid.innerHTML = planning.map(d => `
+    <div class="day ${dayClass(d.type)}">
+      <div class="day-head">
+        <div class="day-name">${d.day}</div>
+        <div class="badge ${badgeClass(d.type)}">${d.type}</div>
+      </div>
+      <div class="day-desc">${d.desc}</div>
+    </div>
+  `).join("");
+}
+function renderSwitch(){
+  const sw = document.getElementById("session-switch");
+  sw.innerHTML = Object.keys(sessions).map((key,i)=>`
+    <button class="sbtn ${i===0?'active':''}" onclick="renderSession('${key}', this)">${sessions[key].label}</button>
+  `).join("");
+}
+function renderSession(key, btn){
+  document.querySelectorAll(".sbtn").forEach(b=>b.classList.remove("active"));
+  if(btn) btn.classList.add("active");
+  const s = sessions[key];
+  document.getElementById("session-detail").innerHTML = `
+    <section class="session-card">
+      <div class="session-title">
+        <h2>${s.label}</h2>
+        <p>${s.subtitle}</p>
+      </div>
+      ${s.blocks.map(block => `
+        <div class="block">
+          <div class="block-name">
+            <strong>${block.name}</strong>
+            <span>${block.goal}</span>
+          </div>
+          ${block.ex.map(e => `
+            <div class="exercise">
+              <div>
+                <div class="ex-name">${e[0]}</div>
+                <div class="ex-target">${e[1]}</div>
+              </div>
+              <div class="ex-dose">${e[2]}</div>
+            </div>
+          `).join("")}
+        </div>
+      `).join("")}
+      <div class="block">
+        <div class="note">${s.note}</div>
+      </div>
+    </section>
+  `;
+}
+
+let records = {};
+
+function loadRecords(){
+  try{
+    records = JSON.parse(localStorage.getItem("esthetic_program_records_v1")) || {};
+  }catch(e){
+    records = {};
+  }
+}
+function saveRecords(){
+  localStorage.setItem("esthetic_program_records_v1", JSON.stringify(records));
+}
+function recordKey(sessionKey, exName){
+  return sessionKey + "::" + exName;
+}
+function updateRecord(key, value){
+  records[key] = value;
+  saveRecords();
+}
+function getAllExercises(){
+  const seen = new Set();
+  const list = [];
+  Object.keys(sessions).forEach(sessionKey=>{
+    sessions[sessionKey].blocks.forEach(block=>{
+      block.ex.forEach(e=>{
+        const key = recordKey(sessionKey, e[0]);
+        if(!seen.has(key)){
+          seen.add(key);
+          list.push({
+            key,
+            session: sessions[sessionKey].label,
+            block: block.name,
+            name: e[0],
+            target: e[1],
+            dose: e[2]
+          });
+        }
+      });
+    });
+  });
+  return list;
+}
+function escAttr(str){
+  return String(str).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/'/g,"&#39;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+function renderRecords(){
+  const grid = document.getElementById("records-grid");
+  const exercises = getAllExercises();
+  grid.innerHTML = exercises.map(ex => `
+    <div class="record-card">
+      <div class="record-top">
+        <div>
+          <div class="record-title">${ex.name}</div>
+          <div class="record-sub">${ex.target}</div>
+        </div>
+        <label class="record-input-wrap">
+          <input class="record-input" type="number" inputmode="decimal" min="0" step="0.5"
+            value="${records[ex.key] || ""}"
+            oninput="updateRecord('${escAttr(ex.key)}', this.value)"
+            placeholder="0">
+          <span class="record-unit">kg</span>
+        </label>
+      </div>
+      <div class="record-meta">
+        <span>${ex.session} · ${ex.block}</span>
+        <span>${ex.dose}</span>
+      </div>
+    </div>
+  `).join("");
+}
+function clearRecords(){
+  if(confirm("Réinitialiser tous les records ?")){
+    records = {};
+    saveRecords();
+    renderRecords();
+  }
+}
+
+loadRecords();
+renderPlanning();
+renderSwitch();
+renderSession("Push");
+renderRecords();
+</script>
+</body>
+</html>
