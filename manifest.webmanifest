@@ -1,0 +1,20 @@
+{
+  "name": "LockIn — Training OS",
+  "short_name": "LockIn",
+  "description": "Suivi personnel PPL, nutrition et progression.",
+  "lang": "fr",
+  "start_url": "./#today",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#090b0a",
+  "theme_color": "#0b0d0c",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
